@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 
 def signup_view(request):
 	if request.method == "POST":
@@ -21,6 +22,7 @@ def signup_view(request):
 	return render(request, 'signup.html', {'form': form})
 
 
+@login_required
 def dashboard_view(request):
 	return render(request, 'dashboard.html')
 
