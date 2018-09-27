@@ -10,12 +10,10 @@
 
 	    {% for message in messages %}
 
-	    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
 		<!--Panel-->
 		<div class="card border-danger mb-3">
-		    <div class="card-header">Error</div>
-		    <div class="card-body text-danger">
-		        <h5 class="card-title">Danger card title</h5>
+		    <div class="card-header text-danger">
+		        <p class="card-title">{{ message }}</p>
 		    </div>
 		</div>
 		<!--/.Panel-->
@@ -25,48 +23,35 @@
 	{% endif %}
 
 <div class="row">
-	<div class="col-md-3"></div>
+	<div class="col-md-4"></div>
 
-	<div class="col-md-6">
+	<div class="col-md-4">
 		<!-- Default form register -->
-		<form class="text-center border border-light p-5">
+		<form class="border border-dark text-center p-5" method="post">
+			{% csrf_token %}
+		    <p class="h4 mb-4 text-center">Sign up</p>
 
-		    <p class="h4 mb-4">Sign up</p>
+		    <!-- {{ form.as_p }} -->
 
-		    <div class="form-row mb-4">
-		        <div class="col">
-		            <!-- First name -->
-		            <input type="text" id="defaultRegisterFormFirstName" class="form-control" placeholder="First name">
-		        </div>
-		        <div class="col">
-		            <!-- Last name -->
-		            <input type="text" id="defaultRegisterFormLastName" class="form-control" placeholder="Last name">
-		        </div>
-		    </div>
-
-		    <!-- E-mail -->
-		    <input type="email" id="defaultRegisterFormEmail" class="form-control mb-4" placeholder="E-mail">
-
-		    <!-- Password -->
-		    <input type="password" id="defaultRegisterFormPassword" class="form-control" placeholder="Password" aria-describedby="defaultRegisterFormPasswordHelpBlock">
-		    <small id="defaultRegisterFormPasswordHelpBlock" class="form-text text-muted mb-4">
-		        At least 8 characters and 1 digit
-		    </small>
-
-		    <!-- Phone number -->
-		    <input type="text" id="defaultRegisterPhonePassword" class="form-control" placeholder="Phone number" aria-describedby="defaultRegisterFormPhoneHelpBlock">
-		    <small id="defaultRegisterFormPhoneHelpBlock" class="form-text text-muted mb-4">
-		        Optional - for two step authentication
-		    </small>
-
-		    <!-- Newsletter -->
-		    <div class="custom-control custom-checkbox">
-		        <input type="checkbox" class="custom-control-input" id="defaultRegisterFormNewsletter">
-		        <label class="custom-control-label" for="defaultRegisterFormNewsletter">Subscribe to our newsletter</label>
-		    </div>
+			{% for field in form %}
+		    <p>
+		    	<span class="ml-3">
+		        	{{ field.label_tag }}
+		        </span>
+		        <span class="mr-0">
+		        	{{ field }}
+		        </span>
+		        <!-- {% if field.help_text %}
+		          <small style="color: grey">{{ field.help_text }}</small>
+		        {% endif %} -->
+		        {% for error in field.errors %}
+		          <p style="color: red">{{ error }}</p>
+		        {% endfor %}
+		    </p>
+		    {% endfor %}
 
 		    <!-- Sign up button -->
-		    <button class="btn btn-info my-4 btn-block" type="submit">Sign in</button>
+		    <button class="btn btn-info my-4 btn-block" type="submit">Sign up</button>
 
 		    <!-- Social register -->
 		    <p>or sign up with:</p>
@@ -96,7 +81,7 @@
 		<!-- Default form register -->
 	</div>
 
-	<div class="col-md-3"></div>
+	<div class="col-md-4"></div>
 
 </div>
 
