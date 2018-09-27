@@ -3,7 +3,7 @@
 
 <div class="container">
     <!-- Navbar brand -->
-    <a class="navbar-brand" href="#">Navbar</a>
+    <a class="navbar-brand" href="{% url 'home' %}">Django</a>
 
     <!-- Collapse button -->
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#basicExampleNav" aria-controls="basicExampleNav"
@@ -17,7 +17,7 @@
         <!-- Links -->
         <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
-                <a class="nav-link" href="#">Home
+                <a class="nav-link" href="{% url 'home' %}">Home
                     <span class="sr-only">(current)</span>
                 </a>
             </li>
@@ -31,7 +31,21 @@
         </ul>
         <!-- Links -->
 
-        
+        <!-- login and logout buttons -->
+        <div class="my-1 mr-3">
+            {% if user.is_authenticated %}
+                <a class="btn btn-outline-white btn-md my-2 my-sm-0 ml-3" href="{% url 'logout' %}">Logout</a>
+        </div>
+        <div class="my-1 mr-3">
+                <!-- user icon -->
+                <div class="white-text">
+                   <i class="fa fa-user" aria-hidden="true"></i>
+                   {{ request.user }}
+                </div>
+            {% else %}
+                <a class="btn btn-outline-white btn-md my-2 my-sm-0 ml-3" href="{% url 'login' %}">Login</a>
+            {% endif %}
+        </div>        
     </div>
     <!-- Collapsible content -->
 
