@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib import messages
 
 def signup_view(request):
 	if request.method == "POST":
@@ -12,6 +13,8 @@ def signup_view(request):
 			user = authenticate(username=username, password=password)
 			login(request, user)
 			return redirect('home')
+		else:
+			messages.error(request, 'Correct the errors below')
 	else:
 		form = UserCreationForm()
 
