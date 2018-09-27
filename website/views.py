@@ -19,13 +19,13 @@ def signup_view(request):
 	else:
 		form = UserCreationForm()
 
-	return render(request, 'signup.html', {'form': form})
+	return render(request, 'app/signup.html', {'form': form})
 
 
 @login_required
 def dashboard_view(request):
-	return render(request, 'dashboard.html')
+	return render(request, 'app/dashboard.html')
 
 
 def home_view(request):
-	return render(request, 'home.html')
+	return render(request, 'app/home.html')
