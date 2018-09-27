@@ -12,10 +12,18 @@ def signup_view(request):
 			password = form.cleaned_data.get('password1')
 			user = authenticate(username=username, password=password)
 			login(request, user)
-			return redirect('home')
+			return redirect('dashboard')
 		else:
 			messages.error(request, 'Correct the errors below')
 	else:
 		form = UserCreationForm()
 
 	return render(request, 'signup.html', {'form': form})
+
+
+def dashboard_view(request):
+	return render(request, 'dashboard.html')
+
+
+def home_view(request):
+	return render(request, 'home.html')
