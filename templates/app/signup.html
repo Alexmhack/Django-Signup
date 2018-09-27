@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+
+{% block title %}
+	| Sign Up
+{% endblock %}
+
+{% block content %}
+	
+	{% if messages %}
+
+	    {% for message in messages %}
+
+		<!--Panel-->
+		<div class="card border-danger mb-3">
+		    <div class="card-header text-danger">
+		        <p class="card-title">{{ message }}</p>
+		    </div>
+		</div>
+		<!--/.Panel-->
+	    
+	    {% endfor %}
+
+	{% endif %}
+
+<div class="row">
+	<div class="col-md-4"></div>
+
+	<div class="col-md-4">
+		<!-- Default form register -->
+		<form class="border border-dark text-center p-5" method="post">
+			{% csrf_token %}
+		    <p class="h4 mb-4 text-center">Sign up</p>
+
+		    <!-- {{ form.as_p }} -->
+
+			{% for field in form %}
+		    <p>
+		    	<span class="ml-3">
+		        	{{ field.label_tag }}
+		        </span>
+		        <span class="mr-0">
+		        	{{ field }}
+		        </span>
+		        <!-- {% if field.help_text %}
+		          <small style="color: grey">{{ field.help_text }}</small>
+		        {% endif %} -->
+		        {% for error in field.errors %}
+		          <p style="color: red">{{ error }}</p>
+		        {% endfor %}
+		    </p>
+		    {% endfor %}
+
+		    <!-- Sign up button -->
+		    <button class="btn btn-info my-4 btn-block" type="submit">Sign up</button>
+
+		    <!-- Social register -->
+		    <p>or sign up with:</p>
+
+		    <a type="button" class="light-blue-text mx-2">
+		        <i class="fa fa-facebook"></i>
+		    </a>
+		    <a type="button" class="light-blue-text mx-2">
+		        <i class="fa fa-twitter"></i>
+		    </a>
+		    <a type="button" class="light-blue-text mx-2">
+		        <i class="fa fa-linkedin"></i>
+		    </a>
+		    <a type="button" class="light-blue-text mx-2">
+		        <i class="fa fa-github"></i>
+		    </a>
+
+		    <hr>
+
+		    <!-- Terms of service -->
+		    <p>By clicking
+		        <em>Sign up</em> you agree to our
+		        <a href="" target="_blank">terms of service</a> and
+		        <a href="" target="_blank">terms of service</a>. </p>
+
+		</form>
+		<!-- Default form register -->
+	</div>
+
+	<div class="col-md-4"></div>
+
+</div>
+
+{% endblock %}
