@@ -13,15 +13,15 @@ After completing the project and adding some styling from [mdbootstrap](http://m
 
 Home Page is simply showing a navbar with working links
 
-![Home Page](https://github.com/Alexmhack/Django-Signup/blob/master/readme_images/home.png)
+![Home Page](https://github.com/Alexmhack/Django-Signup/blob/master/readme_images/home.PNG)
 
 Login page looks like 
 
-![signin Page](https://github.com/Alexmhack/Django-Signup/blob/master/readme_images/signin.png)
+![signin Page](https://github.com/Alexmhack/Django-Signup/blob/master/readme_images/signin.PNG)
 
 Sign Up page
 
-![signup Page](https://github.com/Alexmhack/Django-Signup/blob/master/readme_images/signup.png)
+![signup Page](https://github.com/Alexmhack/Django-Signup/blob/master/readme_images/signup.PNG)
 
 And finally dashboard page with the user name displayed...
 
