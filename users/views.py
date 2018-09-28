@@ -13,6 +13,7 @@ def signup_view(request):
 			password = form.cleaned_data.get('password1')
 			user = authenticate(username=username, password=password)
 			login(request, user)
+			messages.success(request, 'Your account has been successfully created')
 			return redirect('dashboard')
 		else:
 			messages.error(request, 'Correct the errors below')
