@@ -22,25 +22,35 @@
 
 	{% endif %}
 
+<div class="container mt-4">
 <div class="row">
-	<div class="col-md-4"></div>
+	<div class="col-md-4">
+		
+		<div class="list-group mt-5">
+		    <a href="{% url 'users:home' %}" class="list-group-item list-group-item-action waves-effect">Home</a>
+		    <a class="list-group-item bg-secondary text-white waves-effect">
+		        Sign up
+		    </a>
+		    <a href="{% url 'login' %}" class="list-group-item list-group-item-action waves-effect">Login</a>
+		    <a href="{% url 'users:dashboard' %}" class="list-group-item list-group-item-action waves-effect">Dashboard</a>
+		</div>
+
+	</div>
+
+		<div class="col-md-2"></div>
 
 	<div class="col-md-4">
 		<!-- Default form register -->
-		<form class="border border-dark text-center p-5" method="post">
+		<form class="border mt-5 border-secondary text-center p-3" method="post">
 			{% csrf_token %}
-		    <p class="h4 mb-4 text-center">Sign up</p>
+		    <p class="h4 mb-4 text-secondary text-center">Sign up</p>
 
 		    <!-- {{ form.as_p }} -->
 
 			{% for field in form %}
 		    <p>
-		    	<span class="ml-3">
-		        	{{ field.label_tag }}
-		        </span>
-		        <span class="mr-0">
-		        	{{ field }}
-		        </span>
+	        	{{ field.label_tag }}
+	        	{{ field }}
 		        <!-- {% if field.help_text %}
 		          <small style="color: grey">{{ field.help_text }}</small>
 		        {% endif %} -->
@@ -51,7 +61,7 @@
 		    {% endfor %}
 
 		    <!-- Sign up button -->
-		    <button class="btn btn-info my-4 btn-block" type="submit">Sign up</button>
+		    <button class="btn btn-secondary my-4 btn-block" type="submit">Sign up</button>
 
 		    <!-- Social register -->
 		    <p>or sign up with:</p>
@@ -74,15 +84,15 @@
 		    <!-- Terms of service -->
 		    <p>By clicking
 		        <em>Sign up</em> you agree to our
-		        <a href="" target="_blank">terms of service</a> and
-		        <a href="" target="_blank">terms of service</a>. </p>
-
+		        <a href="" target="_blank">terms of service</a>
+		    </p>
 		</form>
 		<!-- Default form register -->
 	</div>
 
-	<div class="col-md-4"></div>
+	<div class="col-md-2"></div>
 
+</div>
 </div>
 
 {% endblock %}
