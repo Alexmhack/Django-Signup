@@ -288,3 +288,99 @@ this section we will be making our own custom model for users and name it
 ```Profile```
 
 For this part we will start another app name ```profiles```
+
+```
+python manage.py startapp profiles
+```
+
+Add profiles app in **settings**
+
+Inside ```profiles/models.py``` add 
+
+```
+from django.db import models
+from django.contrib.auth.models import User
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+```
+
+In this particular case, the profile is created using a Signal. It’s not 
+mandatory, but usually it is a good way to implement it.
+
+```
+class Profile(models.Model):
+	user = models.OneToOneField(User, on_delete=models.CASCADE)
+	bio = models.CharField(max_length=50, blank=True)
+	location = models.CharField(max_length=30, blank=True)
+
+	timestamp = models.DateTimeField(auto_now_add=True)
+	updated = models.DateTimeField(auto_now=True)
+
+
+
+@receiver(post_save, sender=User)
+def update_user_profile(sender, instance, created, **kwargs):
+    if created:
+        Profile.objects.create(user=instance)
+    instance.profile.save()
+```
+
+This is our custom model, ofcourse you can go far more further adding in birth
+date, and profile image and lots more stuff, but for simplicity we are just using
+three fields, actually the other two will not be accessible to the user, they are
+for us, we can know when the user first created an account and when he changed 
+it the last time, or we can display that info to the user as well.
+
+Now we need to create a form so ```forms.py``` file should have
+
+```
+from django import forms
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
+
+class SignUpForm(UserCreationForm):
+    birth_date = forms.DateField(help_text='Required. Format: YYYY-MM-DD')
+
+    class Meta:
+        model = User
+        fields = ('username', 'birth_date', 'password1', 'password2', )
+```
+
+You can add in attributes in the fields again like we did earlier.
+
+There are a few changes that ```views.py``` file should have
+
+```
+from django.contrib.auth import login, authenticate
+from django.shortcuts import render, redirect
+from mysite.core.forms import SignUpForm
+
+def signup(request):
+    if request.method == 'POST':
+        form = SignUpForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            user.refresh_from_db()  # load the profile instance created by the signal
+            user.profile.birth_date = form.cleaned_data.get('birth_date')
+            user.save()
+            raw_password = form.cleaned_data.get('password1')
+            user = authenticate(username=user.username, password=raw_password)
+            login(request, user)
+            return redirect('home')
+    else:
+        form = SignUpForm()
+    return render(request, 'signup.html', {'form': form})
+```
+
+Because of the Signal handling the Profile creation, we have a synchronism issue 
+here. It is easily solved by calling the user.refresh_from_db() method. This 
+will cause a hard refresh from the database, which will retrieve the profile 
+instance.
+
+If you don’t call user.refresh_from_db(), when you try to access the 
+user.profile, it will return None.
+
+After refreshing it user model, set the cleaned data to the fields that matter, 
+and save the user model. The user save will trigger the profile save as well, 
+that’s why you don’t need to call user.profile.save(), instead you call just 
+user.save().
