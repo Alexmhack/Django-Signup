@@ -24,10 +24,7 @@ def signup_view(request):
 
 @login_required
 def dashboard_view(request):
-	context: {
-		'dashboard': True
-	}
-	return render(request, 'app/dashboard.html', context)
+	return render(request, 'app/dashboard.html')
 
 
 def home_view(request):
