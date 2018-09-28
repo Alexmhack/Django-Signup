@@ -313,10 +313,6 @@ class Profile(models.Model):
 	bio = models.CharField(max_length=50, blank=True)
 	location = models.CharField(max_length=30, blank=True)
 
-	timestamp = models.DateTimeField(auto_now_add=True)
-	updated = models.DateTimeField(auto_now=True)
-
-
 
 @receiver(post_save, sender=User)
 def update_user_profile(sender, instance, created, **kwargs):
@@ -327,9 +323,7 @@ def update_user_profile(sender, instance, created, **kwargs):
 
 This is our custom model, ofcourse you can go far more further adding in birth
 date, and profile image and lots more stuff, but for simplicity we are just using
-three fields, actually the other two will not be accessible to the user, they are
-for us, we can know when the user first created an account and when he changed 
-it the last time, or we can display that info to the user as well.
+three fields.
 
 Now we need to create a form so ```forms.py``` file should have
 
@@ -384,3 +378,24 @@ After refreshing it user model, set the cleaned data to the fields that matter,
 and save the user model. The user save will trigger the profile save as well, 
 that’s why you don’t need to call user.profile.save(), instead you call just 
 user.save().
+
+You can display the user details using 
+
+```
+	<h1 class="mt-5 text-center">Welcome {{ request.user }}</h1>
+	<p class="text-left mt-5">Bio: {{ user.profile.bio }}</p>
+	<p class="text-left">Location: {{ user.profile.location }}</p>
+	<p class="text-left">Joined: {{ user.profile.timestamp }}</p>
+```
+
+**For customizing the forms you can use [django-widget-tweaks](https://pypi.org/project/django-widget-tweaks/)**
+
+# Signup With Confirmation Email
+Django provides built-in system for sending emails. But first of test purposes 
+we will be using **Console Backend** for emails. 
+
+Add this settings in ```settings.py``` file
+
+```
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+```
