@@ -101,4 +101,14 @@
 </div>
 </div>
 
+{% block script %}
+<script type="text/javascript">
+	function get_ip(json) {
+		$("#id_location").val(json.ip);
+	}
+</script>
+
+<script src="https://api.ipify.org?format=jsonp&callback=get_ip"></script>
+{% endblock %}
+
 {% endblock %}
