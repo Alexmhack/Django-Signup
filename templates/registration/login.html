@@ -47,7 +47,21 @@
                 <p class="h4 mb-4">Sign in</p>
 
                 {% csrf_token %}
+
                 {{ form.as_p }}
+
+                <!-- {% for field in form %}
+                    <p>
+                        {{ field.label_tag }}
+                        {{ field }}
+                        {% if field.help_text %}
+                          <small style="color: grey">{{ field.help_text }}</small>
+                        {% endif %}
+                        {% for error in field.errors %}
+                          <p style="color: red">{{ error }}</p>
+                        {% endfor %}
+                    </p>
+                {% endfor %} -->
 
                 <!-- Sign in button -->
                 <button class="btn btn-secondary btn-block my-4" type="submit">Sign in</button>                
