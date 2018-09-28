@@ -46,7 +46,11 @@ class SignUpForm(UserCreationForm):
 		label='',
 		max_length=30,
 		required=False,
-		widget=forms.HiddenInput()
+		widget=forms.HiddenInput(
+			attrs={
+				"display": "none"
+			}
+		)
 	)
 
 	class Meta:
