@@ -17,4 +17,7 @@ def signup(request):
             return redirect('users:dashboard')
     else:
         form = SignUpForm()
-    return render(request, 'app/signup.html', {'form': form})
+    return render(request, 'app/signup.html', {
+        'form': form,
+        'profile': True
+    })
