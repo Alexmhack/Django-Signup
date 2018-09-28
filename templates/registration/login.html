@@ -50,7 +50,21 @@
 
                 {% csrf_token %}
 
-                {{ form.as_p }}
+                <p>
+                    <p>
+                        <p><input id="id_username" name="username" placeholder="Username" type="text" class="form-control"></p>
+                    </p>
+                    <p>
+                        <p><input id="id_password" name="password" 
+                        placeholder="Password" type="password" class="form-control"></p>
+                    </p>
+                </p>
+                {% if form.errors %}
+                    <p class="text-danger">
+                        Your username and password didn't match. 
+                        Please try again.
+                    </p>
+                {% endif %}
 
                 <!-- {% for field in form %}
                     <p>
@@ -67,6 +81,7 @@
 
                 <!-- Sign in button -->
                 <button class="btn btn-secondary btn-block my-4" type="submit">Sign in</button>                
+                <input type="hidden" name="next" value="{{ next }}" />
                 
                 <!-- Register -->
                 <p>Not a member?
