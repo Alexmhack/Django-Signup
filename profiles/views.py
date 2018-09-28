@@ -6,6 +6,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .forms import SignUpForm
 from .models import Profile
+from .utils import get_location_from_ip
 
 def signup(request):
     if request.user.is_authenticated:
@@ -16,6 +17,9 @@ def signup(request):
             user = form.save()
             user.refresh_from_db()  # load the profile instance created by the signal
             user.profile.location = form.cleaned_data.get('location')
+            ip_address = user.profile.location
+            location = get_location_from_ip(ip_address)
+            user.profile.location = location
             user.save()
             raw_password = form.cleaned_data.get('password1')
             user = authenticate(username=user.username, password=raw_password)
