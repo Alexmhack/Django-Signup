@@ -8,6 +8,27 @@ In this tutorial we will
 3. Create profile model for users
 4. Create sign up view with confirmation email
 
+# Finished View
+After completing the project and adding some styling from [mdbootstrap](http://mdbootstrap.com/) my project looks like
+
+Home Page is simply showing a navbar with working links
+
+![Home Page](https://github.com/Alexmhack/Django-Signup/tree/master/readme_images/home.png)
+
+Login page looks like 
+
+![Login Page](https://github.com/Alexmhack/Django-Signup/tree/master/readme_images/signin.png)
+
+Sign Up page
+
+![Login Page](https://github.com/Alexmhack/Django-Signup/tree/master/readme_images/signup.png)
+
+And finally dashboard page with the user name displayed...
+
+![Login Page](https://github.com/Alexmhack/Django-Signup/tree/master/readme_images/dashboard.png)
+
+**You can reuse the code from my repo and include it in your django project. Put a star if you liked my work.**
+
 # Django Project Setup
 
 ```
