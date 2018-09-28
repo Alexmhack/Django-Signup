@@ -7,6 +7,8 @@ from django.contrib.auth.decorators import login_required
 from .forms import SignUpForm
 
 def signup_view(request):
+	if request.user.is_authenticated:
+		return redirect('users:dashboard')
 	if request.method == "POST":
 		form = SignUpForm(request.POST)
 		if form.is_valid():
