@@ -279,3 +279,12 @@ You can do the same with ```password``` fields by using ```PasswordInput()```
 
 This would give the forms a nice look as well as placeholders and the rest of 
 the django password validation remains intact and active.
+
+# Sign Up With Profile Model
+So far we have been using the ```User``` model from 
+```django.contrib.auth.models``` that meets almost all needs but **Django** docs
+itself recommends using a custom model for users instead of the ```User``` so in
+this section we will be making our own custom model for users and name it 
+```Profile```
+
+For this part we will start another app name ```profiles```
