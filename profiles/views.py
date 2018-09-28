@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.contrib.auth import login, authenticate
 from django.views.generic import UpdateView
 from django.shortcuts import render, redirect
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .forms import SignUpForm
 from .models import Profile
@@ -25,7 +26,7 @@ def signup(request):
     })
 
 
-class ProfileUpdateView(UpdateView):
+class ProfileUpdateView(LoginRequiredMixin, UpdateView):
     model = Profile
     template_name = "app/profile_edit.html"
     fields = ('bio',)
