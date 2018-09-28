@@ -13,19 +13,19 @@ After completing the project and adding some styling from [mdbootstrap](http://m
 
 Home Page is simply showing a navbar with working links
 
-![Home Page](https://github.com/Alexmhack/Django-Signup/tree/master/readme_images/home.png)
+![Home Page](https://github.com/Alexmhack/Django-Signup/blob/master/readme_images/home.png)
 
 Login page looks like 
 
-![Login Page](https://github.com/Alexmhack/Django-Signup/tree/master/readme_images/signin.png)
+![signin Page](https://github.com/Alexmhack/Django-Signup/blob/master/readme_images/signin.png)
 
 Sign Up page
 
-![Login Page](https://github.com/Alexmhack/Django-Signup/tree/master/readme_images/signup.png)
+![signup Page](https://github.com/Alexmhack/Django-Signup/blob/master/readme_images/signup.png)
 
 And finally dashboard page with the user name displayed...
 
-![Login Page](https://github.com/Alexmhack/Django-Signup/tree/master/readme_images/dashboard.png)
+![dashboard Page](https://github.com/Alexmhack/Django-Signup/blob/master/readme_images/dashboard.PNG)
 
 **You can reuse the code from my repo and include it in your django project. Put a star if you liked my work.**
 
