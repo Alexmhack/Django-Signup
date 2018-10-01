@@ -403,3 +403,136 @@ Add this settings in ```settings.py``` file
 ```
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 ```
+
+Now for checking if a user is authenticated we will create a field in the profile 
+model to determine if the user is confirmed or not.
+
+**profiles/models.py**
+```
+class Profile(models.Model):
+	...
+	email_confirmed = models.BooleanField(default=False)
+```
+
+And for creating a one time link using django we will create a new file ```tokens.py```
+
+```
+from django.contrib.auth.tokens import PasswordResetTokenGenerator
+from django.utils import six
+
+class AccountActivationTokenGenerator(PasswordResetTokenGenerator):
+	def _make_hash_value(self, user, timestamp):
+		return (
+			six.text_type(user.pk) + six.text_type(timestamp) +
+			six.text_type(user.profile.email_confirmed)
+		)
+
+
+account_activation_token = AccountActivationTokenGenerator()
+```
+
+We use the ```pk``` from the user ```timestamp``` and the ```email_confirmed``` field
+to create a token. We basically extended the PasswordResetTokenGenerator to create a 
+unique token generator to confirm email addresses. This make use of your project’s 
+SECRET_KEY, so it is a pretty safe and reliable method.
+
+Now we need to define views for account activation as well as account activation sent 
+view
+
+```
+def account_activation_sent_view(request):
+    return render(request, 'registration/account_activation_sent.html')
+
+
+def account_activate(request, uidb64, token):
+    try:
+        uid = urlsafe_base64_decode(uidb64).decode()
+        print(uid)
+        user = User.objects.get(pk=uid)
+    except (TypeError, ValueError, OverflowError, User.DoesNotExist) as e:
+        print(e)
+        user = None
+
+    if user is not None and account_activation_token.check_token(user, token):
+        user.is_active = True
+        user.profile.email_confirmed = True
+        user.save()
+        login(request, user)
+        return redirect('users:dashboard')
+    else:
+        return render(request, 'registration/account_activation_invalid.html')
+```
+
+```account_activation_sent_view``` is justfor redirecting users if their account activation url is wrong. The template **registration/account_activation_sent.html**
+will be
+
+```
+{% extends "base.html" %}
+
+{% block title %}
+	{{ block.super }} - Check Your Email Account
+{% endblock %}
+
+{% block content %}
+
+	<h3 class="text-center">Check your email account for verifying your django account.</h3>
+	
+{% endblock %}
+```
+
+```account_activate``` function simply fetches the ```uidb64``` and ```token```
+from the url and uses the **.check_token** function from ```AccountActivationTokenGenerator``` class which takes the user and token.
+
+You can remove the print statements from the code, I use them for testing purposes 
+while writing my code.
+
+**profiles/views.py**
+```
+User = get_user_model()
+
+def signup(request):
+    if request.method == 'POST':
+        form = SignUpForm(request.POST)
+        if form.is_valid():
+            user = form.save(commit=False)
+            user.is_active = False
+            user.save()
+            user = form.save()
+            current_site = get_current_site(request)
+            subject = "Activate your Django Serives Account"
+            message = render_to_string('registration/account_activation_email.html', {
+                'user': user,
+                'domain': current_site.domain,
+                'uid': urlsafe_base64_encode(force_bytes(user.pk)).decode(),
+                'token': account_activation_token.make_token(user)
+            })
+            user.email_user(subject, message)
+            return redirect('profiles:account-activation-sent')
+    else:
+        form = SignUpForm()
+    return render(request, 'app/signup.html', {
+        'form': form,
+        'profile': True
+    })
+```
+
+This is the code for sending email to the user email, notice we have removed 
+```user.refresh_from_db()``` since we are using ```form.save(commit=False)```
+so you can use ```user.refresh_from_db()``` after saving the form
+
+```
+	...
+		if form.is_valid():
+            user = form.save(commit=False)
+            user.is_active = False
+            user.save()
+            user = form.save()
+            user.refresh_from_db()
+            # your code here
+           	user.save()		# call save again
+           	...
+```
+
+This is it. We can extend our model by using the ```smtp``` as email backend that 
+will actually send email to the email provided by the user but it requires some more
+settings to be defined in the **settings.py** file. For more details visit [docs](https://docs.djangoproject.com/en/2.1/topics/email/)
