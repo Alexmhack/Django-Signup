@@ -3,10 +3,15 @@ from django.contrib.auth import login, authenticate
 from django.views.generic import UpdateView
 from django.shortcuts import render, redirect
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.sites.shortcuts import get_current_site
+from django.template.loader import render_to_string
+from django.utils.http import urlsafe_base64_encode
+from django.utils.encoding import force_bytes
 
 from .forms import SignUpForm
 from .models import Profile
 from .utils import get_location_from_ip
+from .tokens import account_activation_token
 
 def signup(request):
     if request.user.is_authenticated:
@@ -14,17 +19,24 @@ def signup(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)
         if form.is_valid():
-            user = form.save()
+            user = form.save(commit=False)
             user.refresh_from_db()  # load the profile instance created by the signal
             user.profile.location = form.cleaned_data.get('location')
             ip_address = user.profile.location
             location = get_location_from_ip(ip_address)
             user.profile.location = location
+            user.is_active = False
             user.save()
-            raw_password = form.cleaned_data.get('password1')
-            user = authenticate(username=user.username, password=raw_password)
-            login(request, user)
-            return redirect('users:dashboard')
+            current_site = get_current_site(request)
+            subject = "Activate your Django Serives Account"
+            message = render_to_string('account_activation_email.html', {
+                'user': user,
+                'domain': current_site.domain,
+                'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+                'token': account_activation_token.make_token(user)
+            })
+            user.email_user(subject, message)
+            return redirect('account_activation_sent')
     else:
         form = SignUpForm()
     return render(request, 'app/signup.html', {
