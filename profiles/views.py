@@ -21,12 +21,15 @@ def signup(request):
         form = SignUpForm(request.POST)
         if form.is_valid():
             user = form.save(commit=False)
-            # user.refresh_from_db()  # load the profile instance created by the signal
-            # user.profile.location = form.cleaned_data.get('location')
-            # ip_address = user.profile.location
-            # location = get_location_from_ip(ip_address)
-            # user.profile.location = location
             user.is_active = False
+            user.save()
+            user = form.save()
+            user.refresh_from_db()  # load the profile instance created by the signal
+            user.profile.location = form.cleaned_data.get('location')
+            ip_address = user.profile.location
+            location = get_location_from_ip(ip_address)
+            print(location)
+            user.profile.location = location
             user.save()
             current_site = get_current_site(request)
             subject = "Activate your Django Serives Account"
