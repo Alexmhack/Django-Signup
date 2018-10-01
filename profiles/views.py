@@ -52,9 +52,11 @@ def account_activation_sent_view(request):
 
 def account_activate(request, uidb64, token):
     try:
-        uid = force_text(urlsafe_base64_encode(uidb64))
+        uid = force_text(urlsafe_base64_decode(uidb64))
+        print(uid)
         user = User.objects.get(pk=uid)
-    except (TypeError, ValueError, OverflowError, User.DoesNotExist):
+    except (TypeError, ValueError, OverflowError, User.DoesNotExist) as e:
+        print(e)
         user = None
 
     if user is not None and account_activation_token.check_token(user, token):
