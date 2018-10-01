@@ -45,7 +45,7 @@ def signup(request):
     })
 
 
-def acaccount_activation_sent_view():
+def account_activation_sent_view():
     return render(request, 'registration/account_activation_sent.html')
 
 
