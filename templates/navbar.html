@@ -28,11 +28,11 @@
                 <a class="nav-link" href="{% url 'users:sign-up' %}">Sign up</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{% url 'profile-signup' %}">Profile SignUp</a>
+                <a class="nav-link" href="{% url 'profiles:profile-signup' %}">Profile SignUp</a>
             </li>
             {% if request.user.is_authenticated %}
             <li class="nav-item">
-                <a class="nav-link" href="{% url 'profile-edit' user.profile.id %}">Profile</a>
+                <a class="nav-link" href="{% url 'profiles:profile-edit' user.profile.id %}">Profile</a>
             </li>
             {% endif %}
 

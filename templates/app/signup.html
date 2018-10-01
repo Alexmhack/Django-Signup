@@ -29,7 +29,7 @@
 		<div class="list-group mt-5">
 		    <a href="{% url 'users:home' %}" class="list-group-item list-group-item-action waves-effect">Home</a>
 			{% if profile %}
-		    <a href="{% url 'profile-signup' %}" class="list-group-item bg-secondary text-white waves-effect">
+		    <a href="{% url 'profiles:profile-signup' %}" class="list-group-item bg-secondary text-white waves-effect">
 		    		Profile Sign up
 		    	{% else %}
 		    	<a href="{% url 'users:sign-up' %}" class="list-group-item bg-secondary text-white waves-effect">
