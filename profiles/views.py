@@ -7,11 +7,14 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.template.loader import render_to_string
 from django.utils.http import urlsafe_base64_encode
 from django.utils.encoding import force_bytes, force_text
+from django.contrib.auth import get_user_model
 
 from .forms import SignUpForm
 from .models import Profile
 from .utils import get_location_from_ip
 from .tokens import account_activation_token
+
+User = get_user_model()
 
 def signup(request):
     if request.method == 'POST':
@@ -43,7 +46,7 @@ def signup(request):
     })
 
 
-def account_activation_sent_view():
+def account_activation_sent_view(request):
     return render(request, 'registration/account_activation_sent.html')
 
 
@@ -60,6 +63,8 @@ def account_activate(request, uidb64, token):
         user.save()
         login(request, user)
         return redirect('dashboard')
+    else:
+        return render(request, 'registration/account_activation_invalid.html')
 
 
 class ProfileUpdateView(LoginRequiredMixin, UpdateView):
