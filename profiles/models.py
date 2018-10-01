@@ -7,9 +7,7 @@ class Profile(models.Model):
 	user = models.OneToOneField(User, on_delete=models.CASCADE)
 	bio = models.CharField(max_length=50, blank=True)
 	location = models.CharField(max_length=30)
-
-	timestamp = models.DateTimeField(auto_now_add=True)
-	updated = models.DateTimeField(auto_now=True)
+	email_confirmed = models.BooleanField(default=False)
 
 
 @receiver(post_save, sender=User)
