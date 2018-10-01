@@ -14,17 +14,15 @@ from .utils import get_location_from_ip
 from .tokens import account_activation_token
 
 def signup(request):
-    if request.user.is_authenticated:
-        return redirect('users:dashboard')
     if request.method == 'POST':
         form = SignUpForm(request.POST)
         if form.is_valid():
             user = form.save(commit=False)
-            user.refresh_from_db()  # load the profile instance created by the signal
-            user.profile.location = form.cleaned_data.get('location')
-            ip_address = user.profile.location
-            location = get_location_from_ip(ip_address)
-            user.profile.location = location
+            # user.refresh_from_db()  # load the profile instance created by the signal
+            # user.profile.location = form.cleaned_data.get('location')
+            # ip_address = user.profile.location
+            # location = get_location_from_ip(ip_address)
+            # user.profile.location = location
             user.is_active = False
             user.save()
             current_site = get_current_site(request)
@@ -36,7 +34,7 @@ def signup(request):
                 'token': account_activation_token.make_token(user)
             })
             user.email_user(subject, message)
-            return redirect('account-activation-sent')
+            return redirect('profiles:account-activation-sent')
     else:
         form = SignUpForm()
     return render(request, 'app/signup.html', {
