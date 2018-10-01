@@ -4,6 +4,8 @@ from .views import (
 	signup, ProfileUpdateView, account_activation_sent_view, account_activate
 )
 
+app_name = 'profiles'
+
 urlpatterns = [
 	path('', signup, name='profile-signup'),
 	path('<int:pk>/edit/', ProfileUpdateView.as_view(), name='profile-edit'),
@@ -11,6 +13,6 @@ urlpatterns = [
 
 urlpatterns += [
 	path('account-activation-sent/', account_activation_sent_view, name='account-activation-sent'),
-	re_path(r'^activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
+	path('activate/<uidb64>/<token>/',
 		account_activate, name='activate'),
 ]
