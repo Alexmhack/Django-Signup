@@ -45,6 +45,10 @@ def signup(request):
     })
 
 
+def acaccount_activation_sent_view():
+    return render(request, 'registration/account_activation_sent.html')
+
+
 class ProfileUpdateView(LoginRequiredMixin, UpdateView):
     model = Profile
     template_name = "app/profile_edit.html"
