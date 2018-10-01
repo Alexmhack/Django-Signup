@@ -64,7 +64,7 @@ def account_activate(request, uidb64, token):
         user.profile.email_confirmed = True
         user.save()
         login(request, user)
-        return redirect('dashboard')
+        return redirect('users:dashboard')
     else:
         return render(request, 'registration/account_activation_invalid.html')
 
